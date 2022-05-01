@@ -12,7 +12,7 @@ const makeGallery = galleryItems.map(image =>
 
 gallery.innerHTML = makeGallery;
 
-const instance = new SimpleLightbox('.gallery a', {
+new SimpleLightbox('.gallery a', {
     fadeSpeed: 250,
     overlayOpacity: 0.7,
     captionsData: 'alt',
