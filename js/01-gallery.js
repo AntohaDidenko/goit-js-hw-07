@@ -19,27 +19,29 @@ const makeGallery = galleryItems.map(image =>
 
 gallery.innerHTML = makeGallery;
 
-const instance = basicLightbox.create(
-        `<img class="modal-img">`,
+gallery.addEventListener("click", openModal);
+
+function openModal(e) {
+    e.preventDefault();
+
+    if (e.target.nodeName !== 'IMG') {
+        return
+    };
+
+    const instance = basicLightbox.create(
+        `<img class="modal-img" src="${e.target.dataset.source}">`,
         {
             onShow: () => window.addEventListener('keydown', onEscButtonPress),
-            onClose: () => window.addEventListener('keydown', onEscButtonPress),
+            onClose: () => window.removeEventListener('keydown', onEscButtonPress),
         }
     );
 
-gallery.addEventListener("click", (e) => {
-    e.preventDefault();
-    if (e.target.nodeName !== 'IMG') {
-        return
-    }
-    
-    instance.element().querySelector('.modal-img').src = e.target.dataset.source;
     instance.show();
-});
 
-function onEscButtonPress(e) {
-    if (e.key === 'Escape') {
-        instance.close();
-        window.removeEventListener('keydown', onEscButtonPress);
+    function onEscButtonPress(e) {
+        if (e.code === 'Escape') {
+            instance.close();
+            window.removeEventListener('keydown', onEscButtonPress);
+        }
     }
-}
+}   
